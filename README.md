@@ -45,3 +45,34 @@ echo \
 sudo apt update
 sudo apt install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
 ```
+
+#### Docker conf:
+```
+# Add user to Docker group
+sudo usermod -aG docker jotrujil
+```
+```
+#Verify installation
+docker --version
+docker compose version
+```
+#### Dirs & folders
+```
+# Create main project directory
+mkdir -p ~/Inception/srcs/requirements
+```
+```
+# Create subdirectories for mandatory services
+mkdir -p ~/Inception/srcs/requirements/mariadb/conf
+mkdir -p ~/Inception/srcs/requirements/mariadb/tools
+mkdir -p ~/Inception/srcs/requirements/nginx/conf
+mkdir -p ~/Inception/srcs/requirements/nginx/tools
+mkdir -p ~/Inception/srcs/requirements/wordpress/conf
+mkdir -p ~/Inception/srcs/requirements/wordpress/tools
+```
+```
+# Create volume folders
+sudo mkdir -p /home/jotrujil/data/mariadb
+sudo mkdir -p /home/jotrujil/data/wordpress
+sudo chown -R jotrujil:jotrujil /home/jotrujil/data
+```
