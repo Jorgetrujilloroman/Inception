@@ -7,11 +7,11 @@ RUN apt-get update && apt-get upgrade -y && \
     rm -rf /var/lib/apt/lists/*
 
 # Create directory for the setup script and copy it
-COPY ./tools/nginx_setup.sh /usr/local/bin/
+COPY ./requirements/nginx/tools/nginx_setup.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/nginx_setup.sh
 
 # Copy the NGINX configuration file
-COPY ./conf/nginx.conf /etc/nginx/conf.d/default.conf
+COPY ./requirements/nginx/conf/nginx.conf /etc/nginx/conf.d/default.conf
 
 # Expose only port 443
 EXPOSE 443

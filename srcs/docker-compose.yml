@@ -1,0 +1,59 @@
+# version directive is obsolete, so I prefered to don't use it.
+#version: '3.8'
+
+services:
+  mariadb:
+    # Build from the specific Dockerfile
+    build:
+      context: .
+      dockerfile: requirements/mariadb/Dockerfile
+    container_name: mariadb
+    # Restart if fails
+    restart: always
+    # Environment variables from my .env file
+    env_file:
+      - .env
+    # Map the internal DB data to our host folder for persistence
+    volumes:
+      - mariadb_data:/var/lib/mysql
+    # Internal network for service communication
+    networks:
+      - inception_network
+    expose:
+      - "3306"
+
+  nginx:
+    build:
+      context: .
+      dockerfile: requirements/nginx/Dockerfile
+    container_name: nginx
+    restart: always
+    # NGINX depends on WordPress, which depends on MariaDB
+    # depends_on:
+    #   - wordpress
+    ports:
+      - "443:443"
+    volumes:
+      - wordpress_data:/var/www/wordpress
+    networks:
+      - inception_network
+
+# Define persistent storage units
+volumes:
+  mariadb_data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/jotrujil/data/mariadb
+  wordpress_data:
+    driver: local
+    driver_opts:
+      type: none
+      o: bind
+      device: /home/jotrujil/data/wordpress
+
+# Define the private network for the containers
+networks:
+  inception_network:
+    driver: bridge

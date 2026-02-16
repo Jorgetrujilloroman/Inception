@@ -8,10 +8,10 @@ RUN apt-get update && apt-get upgrade -y && \
 
 # Copy configuration file to allow external connections
 # By default, MariaDB only listens on localhost
-COPY ./conf/50-server.cnf /etc/mysql/mariadb.conf.d/50-server.cnf
+COPY ./requirements/mariadb/conf/50-server.cnf /etc/mysql/mariadb.conf.d/50-server.cnf
 
 # Copy the setup script
-COPY ./tools/mdb_setup.sh /usr/local/bin/
+COPY ./requirements/mariadb/tools/mdb_setup.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/mdb_setup.sh
 
 # Expose the default MariaDB port
