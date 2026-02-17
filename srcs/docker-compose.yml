@@ -29,14 +29,31 @@ services:
     container_name: nginx
     restart: always
     # NGINX depends on WordPress, which depends on MariaDB
-    # depends_on:
-    #   - wordpress
+    depends_on:
+      - wordpress
     ports:
       - "443:443"
     volumes:
       - wordpress_data:/var/www/wordpress
     networks:
       - inception_network
+
+  wordpress:
+      build:
+        context: .
+        dockerfile: requirements/wordpress/Dockerfile
+      container_name: wordpress
+      restart: always
+      env_file:
+        - .env
+      depends_on:
+        - mariadb
+      volumes:
+        - wordpress_data:/var/www/wordpress
+      networks:
+        - inception_network
+      expose:
+        - "9000"
 
 # Define persistent storage units
 volumes:
