@@ -10,7 +10,7 @@ DOCKER_COMPOSE = docker compose -f $(COMPOSE_FILE)
 ENV_SCRIPT = ./env_generator.sh
 
 # Default target: ensure the setup script runs, builds and starts the infrastructure
-all: stup build up
+all: setup build up
 
 # Runs the environment generator script if not exists
 setup:
