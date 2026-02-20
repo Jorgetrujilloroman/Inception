@@ -1,4 +1,3 @@
-# Define the project name
 NAME = inception
 
 # Path to the docker-compose file
@@ -7,8 +6,21 @@ COMPOSE_FILE = srcs/docker-compose.yml
 # Commands
 DOCKER_COMPOSE = docker compose -f $(COMPOSE_FILE)
 
-# Default target: builds and starts the infrastructure
-all: build up
+# Environment generation script
+ENV_SCRIPT = ./env_generator.sh
+
+# Default target: ensure the setup script runs, builds and starts the infrastructure
+all: stup build up
+
+# Runs the environment generator script if not exists
+setup:
+	@echo "Checking configuration file..."
+	@if [ ! -f srcs/.env ]; then \
+		echo "Environment file not found. Starting setup..."; \
+		bash $(ENV_SCRIPT); \
+	else \
+		echo "Environment file already exists."; \
+	fi
 
 # Build the images defined in the compose file
 build:
@@ -35,12 +47,12 @@ start:
 	@echo "Starting Inception services..."
 	$(DOCKER_COMPOSE) start
 
-# Full cleanup: stops containers and deletes ALL data (volumes included)
+# Full cleanup: stops containers and deletes ALL data including volumes.
 clean: down
 	@echo "Cleaning up volumes and data..."
 	@docker volume rm $$(docker volume ls -q) 2>/dev/null || true
-	@sudo rm -rf /home/jotrujil/data/mariadb/*
-	@sudo rm -rf /home/jotrujil/data/wordpress/*
+	@sudo rm -rf /home/$(shell whoami)/data/mariadb/*
+	@sudo rm -rf /home/$(shell whoami)/data/wordpress/*
 
 # Rebuild everything from scratch
 re: clean all
