@@ -11,7 +11,8 @@ lc-messages-dir         = /usr/share/mysql
 # Allow the container to be reached by other containers in the network
 bind-address            = 0.0.0.0
 query_cache_size        = 16M
-log_error               = /var/log/mysql/error.log
+# I decided showing errors on console instead of a file, so I'll comment next line:
+#log_error               = /var/log/mysql/error.log
 expire_logs_days        = 10
 character-set-server    = utf8mb4
 collation-server        = utf8mb4_general_ci

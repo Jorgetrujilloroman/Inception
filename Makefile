@@ -35,7 +35,7 @@ up:
 # Stop and remove containers, networks, and images defined in the compose file
 down:
 	@echo "Stopping Inception containers..."
-	$(DOCKER_COMPOSE) down
+	-$(DOCKER_COMPOSE) down
 
 # Stop the containers without removing them
 stop:
@@ -48,11 +48,15 @@ start:
 	$(DOCKER_COMPOSE) start
 
 # Full cleanup: stops containers and deletes ALL data including volumes.
+# || true -> ensures the Makefile doesn't stop if there's nothing to down
 clean: down
+	-@$(DOCKER_COMPOSE) down --volumes --rmi all 2>/dev/null || true
 	@echo "Cleaning up volumes and data..."
 	@docker volume rm $$(docker volume ls -q) 2>/dev/null || true
 	@sudo rm -rf /home/$(shell whoami)/data/mariadb/*
 	@sudo rm -rf /home/$(shell whoami)/data/wordpress/*
+	@rm -f srcs/.env
+	@echo "Cleanup complete."
 
 # Rebuild everything from scratch
 re: clean all
