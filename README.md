@@ -70,9 +70,25 @@ mkdir -p ~/Inception/srcs/requirements/nginx/tools
 mkdir -p ~/Inception/srcs/requirements/wordpress/conf
 mkdir -p ~/Inception/srcs/requirements/wordpress/tools
 ```
+#### Install firefox and visualize on host machine:
+Since I havent installed any visual enviroment, to make easier to test the Wordpress container, I am installing Firefox and forwarding it via X11 to the host machine:
 ```
-# Create volume folders
-sudo mkdir -p /home/jotrujil/data/mariadb
-sudo mkdir -p /home/jotrujil/data/wordpress
-sudo chown -R jotrujil:jotrujil /home/jotrujil/data
+# Install Firefox and necessary graphic tools:
+sudo apt update
+sudo apt install -y xauth x11-apps firefox-esr
 ```
+Enable graphic forwarding:
+```
+sudo nano /etc/ssh/sshd_config
+```
+Uncomment and set as "yes" following lines:
+- X11Forwarding yes
+- X11DisplayOffset 10
+- X11UseLocalhost yes
+
+Test it:
+```
+echo $DISPLAY
+xeyes
+```
+
