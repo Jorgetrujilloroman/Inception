@@ -49,24 +49,28 @@ read -p "Site Title [Inception]: " WP_TITLE
 WP_TITLE=${WP_TITLE:-Inception}
 
 while true; do
-    read -p "WP Admin Username (cannot contain 'admin'): " WP_ADMIN_USR
-    if [[ "$WP_ADMIN_USR" == *[Aa][Dd][Mm][Ii][Nn]* ]]; then
+    read -p "WP Admin Username (cannot contain 'admin'): " WP_ADMIN_USER
+    if [[ "$WP_ADMIN_USER" == *[Aa][Dd][Mm][Ii][Nn]* ]]; then
         echo "Error: Dont include 'admin' in the username."
-    elif [ -z "$WP_ADMIN_USR" ]; then
+    elif [ -z "$WP_ADMIN_USER" ]; then
         echo "Error: Admin username is required."
     else
         break
     fi
 done
 
-WP_ADMIN_PWD=$(read_password "WP Admin Password")
+WP_ADMIN_PASSWORD=$(read_password "WP Admin Password")
 read -p "WP Admin Email [$INCEPTION_USER@student.42.fr]: " WP_ADMIN_EMAIL
 WP_ADMIN_EMAIL=${WP_ADMIN_EMAIL:-$INCEPTION_USER@student.42.fr}
 
 #Secondary User
-#read -p "WP Secondary User: " WP_USR
-WP_PWD=$(read_password "WP Secondary Password")
-read -p "WP Secondary Email: " WP_EMAIL
+read -p "WP Secondary User [user]: " WP_USER
+WP_USER=${WP_USER:-user}
+#Secondary user password:
+WP_USER_PASSWORD=$(read_password "WP Secondary Password")
+#Secondary user email:
+read -p "WP Secondary Email [$WP_USER@student.42.fr]: " WP_USER_EMAIL
+WP_USER_EMAIL=${WP_USER_EMAIL:-$WP_USER@student.42.fr}
 
 #Paths and Networking
 WP_URL="$INCEPTION_USER.42.fr"
@@ -82,12 +86,12 @@ SQL_ROOT_PASSWORD=$SQL_ROOT_PASSWORD
 # WordPress
 WP_URL=$WP_URL
 WP_TITLE=$WP_TITLE
-WP_ADMIN_USR=$WP_ADMIN_USR
-WP_ADMIN_PWD=$WP_ADMIN_PWD
+WP_ADMIN_USER=$WP_ADMIN_USER
+WP_ADMIN_PASSWORD=$WP_ADMIN_PASSWORD
 WP_ADMIN_EMAIL=$WP_ADMIN_EMAIL
-WP_USR=$WP_USR
-WP_PWD=$WP_PWD
-WP_EMAIL=$WP_EMAIL
+WP_USER=$WP_USER
+WP_USER_PASSWORD=$WP_USER_PASSWORD
+WP_USER_EMAIL=$WP_USER_EMAIL
 
 # Volume Paths 
 WP_DATA_PATH=/home/$INCEPTION_USER/data/wordpress
