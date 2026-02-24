@@ -70,6 +70,7 @@ mkdir -p ~/Inception/srcs/requirements/nginx/tools
 mkdir -p ~/Inception/srcs/requirements/wordpress/conf
 mkdir -p ~/Inception/srcs/requirements/wordpress/tools
 ```
+## Tests
 #### Install firefox and visualize on host machine:
 Since I havent installed any visual enviroment, to make easier to test the Wordpress container, I am installing Firefox and forwarding it via X11 to the host machine:
 ```
@@ -90,5 +91,10 @@ Test it:
 ```
 echo $DISPLAY
 xeyes
+```
+
+On Windows host, I needed to install VcXsrv and set:
+```
+set DISPLAY=127.0.0.1:0.0
 ```
 
