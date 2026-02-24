@@ -1,100 +1,62 @@
 # Inception
-System Administration related exercise.
 
-## Distribution:
-Based on this [Index](https://www.debian.org/releases/index.es.html), I chosed the OS version: [Debian 12.0.0](https://cdimage.debian.org/cdimage/archive/12.0.0/amd64/iso-cd/) -> penultimate stable (Bookworm)
+*This project has been created as part of the 42 curriculum by [jotrujil](https://profile-v3.intra.42.fr/users/jotrujil).*
 
-## Installation:
-RAM: 2 GB
-CPUs: 2
-HDD: 20 GB
+## Description
+This project is a System Administration exercise focused on the virtualization of several Docker images to create a secure, multi-service infrastructure. The goal is to build a stack from scratch using **Docker Compose**, ensuring that each service runs in its own dedicated and isolated container.
 
-- Graphical install: 1 GB Swap
+### Project Overview & Design Choices
+The infrastructure consists of an **NGINX** server, a **WordPress** site with `php-fpm`, and a **MariaDB** database. All services communicate via a private bridge network and use persistent volumes for data storage.
 
-## Configuration:
+#### Technical Comparisons:
+* **Virtual Machines vs Docker**: VMs virtualize hardware and run a full OS, consuming more resources. Docker virtualizes the OS kernel, making containers lightweight and faster.
+* **Secrets vs Environment Variables**: While environment variables are used for general configuration, sensitive data like passwords should be handled securely (e.g., through `.env` files ignored by git or Docker secrets) to prevent exposure.
+* **Docker Network vs Host Network**: `network: host` is forbidden because it lacks isolation. We use a dedicated **Docker Network** to allow secure, internal communication between containers.
+* **Docker Volumes vs Bind Mounts**: We use **Docker Volumes** with **Bind Mount** options to map container data to specific host paths (`/home/login/data/`), ensuring data survives container deletion and is easily accessible on the host.
 
-```
-su - 
-apt update && apt install -y sudo
-usermod -aG sudo jotrujil
-```
+## Instructions
 
-## Docker install
+### Prerequisites
+* A Virtual Machine (or host with sudo permissions) running **[Debian 12](https://cdimage.debian.org/cdimage/archive/12.0.0/amd64/iso-cd/)** (or the penultimate stable version, which I choose based on [this index](https://www.debian.org/releases/index.es.html)).
+* **Docker** and **Docker Compose** installed.
+* `make` utility.
 
+### Compilation and Execution
+The project is fully managed through the **Makefile**, which automates the initial setup and container orchestration.
 
-```
-# Update repositories and install necessary dependencies
-sudo apt update
-sudo apt install -y ca-certificates curl gnupg
-```
-```
-# Add the official Docker GPG key
-sudo install -m 0755 -d /etc/apt/keyrings
-curl -fsSL https://download.docker.com/linux/debian/gpg | sudo gpg --dearmor -o /etc/apt/keyrings/docker.gpg
-sudo chmod a+r /etc/apt/keyrings/docker.gpg
-```
-```
-# Configure the repository
-echo \
-  "deb [arch="$(dpkg --print-architecture)" signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/debian \
-  "$(. /etc/os-release && echo "$VERSION_CODENAME")" stable" | \
-  sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-```
-```
-# Install Docker Engine and Docker Compose
-sudo apt update
-sudo apt install -y docker-ce docker-ce-cli containerd.io docker-buildx-plugin docker-compose-plugin
-```
+1.  **Clone the repository**:
+    ```bash
+    git clone <repository_url> inception && cd inception
+    ```
 
-#### Docker conf:
-```
-# Add user to Docker group
-sudo usermod -aG docker jotrujil
-```
-```
-#Verify installation
-docker --version
-docker compose version
-```
-#### Dirs & folders
-```
-# Create main project directory
-mkdir -p ~/Inception/srcs/requirements
-```
-```
-# Create subdirectories for mandatory services
-mkdir -p ~/Inception/srcs/requirements/mariadb/conf
-mkdir -p ~/Inception/srcs/requirements/mariadb/tools
-mkdir -p ~/Inception/srcs/requirements/nginx/conf
-mkdir -p ~/Inception/srcs/requirements/nginx/tools
-mkdir -p ~/Inception/srcs/requirements/wordpress/conf
-mkdir -p ~/Inception/srcs/requirements/wordpress/tools
-```
-## Tests
-#### Install firefox and visualize on host machine:
-Since I havent installed any visual enviroment, to make easier to test the Wordpress container, I am installing Firefox and forwarding it via X11 to the host machine:
-```
-# Install Firefox and necessary graphic tools:
-sudo apt update
-sudo apt install -y xauth x11-apps firefox-esr
-```
-Enable graphic forwarding:
-```
-sudo nano /etc/ssh/sshd_config
-```
-Uncomment and set as "yes" following lines:
-- X11Forwarding yes
-- X11DisplayOffset 10
-- X11UseLocalhost yes
+2.  **Launch the project**:
+    ```bash
+    make
+    ```
+    *This command automatically detects if the `srcs/.env` file exists. If it is missing, it will launch the `env_generator.sh` script to prompt for credentials before building and starting the infrastructure.*
 
-Test it:
-```
-echo $DISPLAY
-xeyes
-```
+3.  **Basic Management**:
+    * **Stop services**: `make down`
+    * **Check status**: `make status`
+    * **View logs**: `make logs`
+    * **Full Cleanup**: `make clean` (Deletes containers, images, and data in `/home/$USER/data/`).
+    * **Clean and recreates the site**: `make re`
 
-On Windows host, I needed to install VcXsrv and set:
-```
-set DISPLAY=127.0.0.1:0.0
-```
+### Accessing the Site
+Once the services are running, you can access the WordPress site. Note that the infrastructure only allows secure connections via port 443.
 
+* **URL**: `https://jotrujil.42.fr`
+* **Admin Panel**: `https://jotrujil.42.fr/wp-admin`
+  
+*More information about how to test the site without a graphical enviroment on DEV_DOC.md*
+## Resources
+* [Docker Official Documentation](https://docs.docker.com/)
+* [WordPress php-fpm Configuration](https://www.php.net/manual/en/install.fpm.php)
+* [MariaDB Security Best Practices](https://mariadb.com/kb/en/securing-mariadb/)
+
+### AI Usage
+AI was used in this project as a supportive peer for the following tasks:
+* **Learning**: Learning about Docker, containers, and Linux.
+* **Architecture Review**: Validating the `docker-compose` network and volume logic.
+* **Debugging**: Troubleshooting `docker-network` inspection and volume visibility.
+* **Documentation**: Structuring the mandatory documentation files (`README.md`, `USER_DOC.md`, `DEV_DOC.md`) according to the project requirements.
