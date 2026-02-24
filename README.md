@@ -48,7 +48,7 @@ Once the services are running, you can access the WordPress site. Note that the 
 * **URL**: `https://jotrujil.42.fr`
 * **Admin Panel**: `https://jotrujil.42.fr/wp-admin`
   
-*More information about how to test the site without a graphical enviroment on DEV_DOC.md*
+*More information about how to test the site without a graphical enviroment on [DEV_DOC.md](https://github.com/Jorgetrujilloroman/Inception/blob/main/DEV_DOC.md#2-development-and-graphical-testing)*
 ## Resources
 * [Docker Official Documentation](https://docs.docker.com/)
 * [WordPress php-fpm Configuration](https://www.php.net/manual/en/install.fpm.php)
