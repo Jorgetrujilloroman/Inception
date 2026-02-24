@@ -1,4 +1,4 @@
-# DEV_DOC.md - Developer Documentation
+# Developer Documentation
 
 ## 1. Development Environment
 * **Hypervisor**: VirtualBox.
