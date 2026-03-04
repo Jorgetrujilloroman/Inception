@@ -34,7 +34,7 @@ Since the environment lacks a graphical interface, **X11 Forwarding** is used to
       * No additional X-Server installation is required as it is native. Ensure `xhost +` is run if permission issues occur.
 
 3.  **Connection & Verification**:
-    * Connect via SSH with the X11 flag: `ssh -X username@<vm_ip>`.
+    * Connect via SSH with the X11 flag: `ssh -YA username@<vm_ip>` (A flag is for using host SSH in the campus, allowing clone intra repository).
     * Verify: `echo $DISPLAY` (should return something like `localhost:10.0`).
     * Test: Run `xeyes` to see the graphical eyes on your host.
     * **Browser**: Launch `firefox &` to visualize the containerized site.
