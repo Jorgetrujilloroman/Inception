@@ -45,8 +45,8 @@ The project is fully managed through the **Makefile**, which automates the initi
 ### Accessing the Site
 Once the services are running, you can access the WordPress site. Note that the infrastructure only allows secure connections via port 443.
 
-* **URL**: `https://jotrujil.42.fr`
-* **Admin Panel**: `https://jotrujil.42.fr/wp-admin`
+* **URL**: `https://username.42.fr`
+* **Admin Panel**: `https://username.42.fr/wp-admin`
   
 *More information about how to test the site without a graphical enviroment on [DEV_DOC.md](https://github.com/Jorgetrujilloroman/Inception/blob/main/DEV_DOC.md#2-development-and-graphical-testing)*
 ## Resources
