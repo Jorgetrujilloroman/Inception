@@ -14,7 +14,7 @@ Use the **Makefile** in the root directory:
 * **Recreate**: `make re` Perform a full clean, setup and build the whole infrastructure.
 
 ## 3. Access and Credentials
-* **Access**: Use `https://jotrujil.42.fr`.
+* **Access**: Use `https://username.42.fr`.
 * **Credentials**: Managed via `srcs/.env`. If the file is missing, `make` will prompt you to create it using the `env_generator.sh` script.
 * **Admin User**: The administrator username does not contain 'admin' or 'administrator'.
 
