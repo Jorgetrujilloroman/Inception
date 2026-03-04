@@ -18,5 +18,9 @@ if [ ! -f /etc/nginx/ssl/inception.crt ]; then
 	-subj "/C=ES/ST=Malaga/L=Malaga/O=42/OU=42/CN=${WP_URL}";
 fi
 
+#Search and replace DOMAIN NAME variable in nginx conf file, to make it universal
+echo "NGINX: configuring server_name to ${WP_URL}...";
+sed -i "s/DOMAIN_NAME/${WP_URL}/g" /etc/nginx/conf.d/default.conf
+
 # Execute the main NGINX command passed as arguments
 exec "$@"
