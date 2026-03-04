@@ -28,6 +28,9 @@ services:
       dockerfile: requirements/nginx/Dockerfile
     container_name: nginx
     restart: always
+    # Environment variables from my .env file
+    env_file:
+      - .env 
     # NGINX depends on WordPress, which depends on MariaDB
     depends_on:
       - wordpress
